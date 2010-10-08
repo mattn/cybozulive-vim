@@ -1,7 +1,5 @@
 set rtp+=webapi-vim
 
-let notification_url = "https://api.cybozulive.com/api/notification/V2"
-
 let config = {}
 let configfile = expand('~/.cybozulive')
 if filereadable(configfile)
@@ -14,7 +12,7 @@ else
   let auth_url =  "https://api.cybozulive.com/oauth/authorize"
   let access_token_url = "https://api.cybozulive.com/oauth/token"
   
-  let [request_token, request_token_secret] = oauth#requestToken(request_token_url, config.consumer_key, config.consumer_secret)
+  let [request_token, request_token_secret] = oauth#requestToken(request_token_url, config.consumer_key, config.consumer_secret, {})
   if has("win32") || has("win64")
     exe "!start rundll32 url.dll,FileProtocolHandler ".auth_url."?oauth_token=".request_token
   else
@@ -27,7 +25,8 @@ else
   call writefile([string(config)], configfile)
 endif
 
-let ret = oauth#get(notification_url, config.consumer_key, config.consumer_secret, config.access_token, config.access_token_secret, {})
+let notification_url = "https://api.cybozulive.com/api/notification/V2"
+let ret = oauth#get(notification_url, config.consumer_key, config.consumer_secret, config.access_token, config.access_token_secret, {}, {}, {})
 let dom = xml#parse(ret.content)
 for elem in dom.findAll("entry")
   echo elem.find("updated").value() . " " .  elem.find("title").value()
