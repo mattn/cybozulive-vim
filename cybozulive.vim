@@ -9,7 +9,7 @@ else
   let ctx.consumer_secret = input("consumer_secret:")
   
   let request_token_url = "https://api.cybozulive.com/oauth/initiate"
-  let auth_url =  "https://api.cybozulive.com/oauth/authorize"
+  let auth_url = "https://api.cybozulive.com/oauth/authorize"
   let access_token_url = "https://api.cybozulive.com/oauth/token"
   
   let ctx = oauth#request_token(request_token_url, ctx)
